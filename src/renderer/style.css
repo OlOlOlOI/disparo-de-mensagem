@@ -1,0 +1,55 @@
+:root {
+  --fundo: #0f1b2d; --painel: #16253b; --painel2: #1d3150; --borda: #2a4268;
+  --texto: #e8eef7; --suave: #9db0cc; --acento: #3ddc84; --acento-texto: #07210f;
+  --alerta: #ffb84d; --erro: #ff6b6b;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--fundo); color: var(--texto); font: 14px/1.5 -apple-system, "Segoe UI", Roboto, Arial, sans-serif; display: flex; flex-direction: column; }
+.modo { background: var(--alerta); color: #3a2600; text-align: center; font-weight: 700; padding: 6px; letter-spacing: .03em; font-size: 12px; }
+.modo.real { background: var(--erro); color: #fff; }
+.layout { flex: 1; display: flex; min-height: 0; }
+nav { width: 200px; background: var(--painel); border-right: 1px solid var(--borda); padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
+nav h1 { font-size: 18px; margin: 0 0 16px 8px; line-height: 1.2; }
+nav h1 span { color: var(--acento); }
+nav button { text-align: left; background: none; border: 0; color: var(--suave); padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+nav button:hover { background: var(--painel2); color: var(--texto); }
+nav button.ativa { background: var(--painel2); color: var(--acento); font-weight: 600; }
+#rodape-menu { margin-top: auto; font-size: 12px; color: var(--suave); padding: 8px; }
+main { flex: 1; overflow: auto; padding: 24px 32px 48px; }
+section { max-width: 880px; }
+.oculto { display: none !important; }
+h2 { margin: 0 0 4px; font-size: 22px; }
+h3 { margin: 24px 0 8px; font-size: 15px; color: var(--suave); text-transform: uppercase; letter-spacing: .05em; }
+p.sub { margin: 0 0 20px; color: var(--suave); }
+.cartao { background: var(--painel); border: 1px solid var(--borda); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+label { display: block; font-size: 12px; color: var(--suave); margin: 12px 0 4px; }
+input[type=text], input[type=number], select, textarea { width: 100%; background: var(--fundo); color: var(--texto); border: 1px solid var(--borda); border-radius: 8px; padding: 9px 10px; font: inherit; }
+textarea { min-height: 130px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--acento); border-color: transparent; }
+button.b { background: var(--painel2); color: var(--texto); border: 1px solid var(--borda); border-radius: 8px; padding: 9px 14px; cursor: pointer; font: inherit; }
+button.b:hover { border-color: var(--acento); }
+button.b.principal { background: var(--acento); color: var(--acento-texto); border-color: var(--acento); font-weight: 700; }
+button.b.perigo { background: var(--erro); color: #2b0000; border-color: var(--erro); font-weight: 700; }
+button.b:disabled { opacity: .45; cursor: not-allowed; }
+.linha { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.linha > .cresce { flex: 1; min-width: 200px; }
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin: 12px 0; }
+.num { background: var(--painel); border: 1px solid var(--borda); border-radius: 10px; padding: 12px; }
+.num b { display: block; font-size: 24px; }
+.num span { font-size: 12px; color: var(--suave); }
+.num.ok b { color: var(--acento); }
+.num.aviso b { color: var(--alerta); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--borda); vertical-align: top; }
+th { color: var(--suave); font-weight: 600; font-size: 12px; }
+.aviso { background: #3a2f12; border: 1px solid var(--alerta); color: #ffe2a8; padding: 10px 14px; border-radius: 10px; margin-bottom: 16px; }
+.aviso.erro { background: #3a1616; border-color: var(--erro); color: #ffd0d0; }
+.aviso.ok { background: #123a24; border-color: var(--acento); color: #c8f7da; }
+.dica { color: var(--suave); font-size: 12px; margin-top: 6px; }
+.barra { height: 10px; background: var(--fundo); border-radius: 6px; overflow: hidden; border: 1px solid var(--borda); }
+.barra > div { height: 100%; width: 0; background: var(--acento); transition: width .15s; }
+.balao { background: #dcf8c6; color: #111; border-radius: 10px; padding: 10px 12px; white-space: pre-wrap; max-width: 420px; }
+.etiqueta { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 11px; background: var(--painel2); color: var(--suave); }
+.etiqueta.sim { background: #4a3a10; color: var(--alerta); }
+details summary { cursor: pointer; color: var(--suave); margin: 8px 0; }

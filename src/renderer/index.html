@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:;">
+  <title>Disparo Urbano Norte</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="modo" class="modo">MODO SIMULAÇÃO — nenhuma mensagem real é enviada</div>
+  <div class="layout">
+    <nav id="menu">
+      <h1>Disparo<br><span>Urbano Norte</span></h1>
+      <button data-aba="enviar" class="ativa">Enviar campanha</button>
+      <button data-aba="planilha">Planilha</button>
+      <button data-aba="mensagens">Mensagens</button>
+      <button data-aba="descadastros">Descadastros</button>
+      <button data-aba="historico">Histórico</button>
+      <button data-aba="ajustes">Ajustes</button>
+      <div id="rodape-menu"></div>
+    </nav>
+    <main>
+      <div id="aviso" class="aviso oculto"></div>
+      <section id="aba-enviar"></section>
+      <section id="aba-planilha" class="oculto"></section>
+      <section id="aba-mensagens" class="oculto"></section>
+      <section id="aba-descadastros" class="oculto"></section>
+      <section id="aba-historico" class="oculto"></section>
+      <section id="aba-ajustes" class="oculto"></section>
+    </main>
+  </div>
+  <script src="renderer.js"></script>
+</body>
+</html>
