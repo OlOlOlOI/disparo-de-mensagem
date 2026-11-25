@@ -11,6 +11,7 @@ const { normalizarTelefone, formatarTelefone } = require('./core/phone');
 const { renderizar } = require('./core/template');
 const { Estado, slug } = require('./core/state');
 const { executarCampanha } = require('./core/sender');
+const { adivinharColunas, colunasFaltando } = require('./core/columns');
 const { criarProvedorSimulacao } = require('./core/provider-sim');
 
 // ---------- configuração local (por computador) ----------
@@ -59,6 +60,11 @@ async function carregarPlanilha() {
   if (planilha && planilha.hash === hash) return planilha; // nada mudou
   const { headers, rows } = await lerPlanilha(buf, nome);
   planilha = { headers, rows, hash, origem: f.tipo === 'arquivo' ? f.nome : f.url, atualizadoEm: new Date().toISOString() };
+  // primeira vez (ou mapa vazio): descobre as colunas sozinho e já deixa salvo para todos
+  if (!(cfg.mapa && cfg.mapa.telefone)) {
+    const chute = adivinharColunas(headers);
+    if (chute.telefone) { estado.gravarConfig({ mapa: chute }); planilha.mapaAutomatico = true; }
+  }
   return planilha;
 }
 
@@ -76,7 +82,12 @@ function iniciarVigia() {
 
 function resumoPlanilha() {
   if (!planilha) return null;
-  return { headers: planilha.headers, linhas: planilha.rows.length, origem: planilha.origem, atualizadoEm: planilha.atualizadoEm, amostra: planilha.rows.slice(0, 3) };
+  const mapa = (estado && estado.lerConfig().mapa) || {};
+  return {
+    headers: planilha.headers, linhas: planilha.rows.length, origem: planilha.origem, atualizadoEm: planilha.atualizadoEm,
+    amostra: planilha.rows.slice(0, 3), mapa, mapaAutomatico: Boolean(planilha.mapaAutomatico),
+    mapaProblema: colunasFaltando(mapa, planilha.headers),
+  };
 }
 
 function publico(campanha, simulacao) {
@@ -99,7 +110,7 @@ function registrarIpc() {
   h('ajustes:ler', () => {
     const l = lerLocal();
     const cfg = estado ? estado.lerConfig() : {};
-    return { pasta: l.pasta || '', operador: l.operador || '', pronto: Boolean(estado), limiteDiario: cfg.limiteDiario ?? 250, intervaloMs: cfg.intervaloMs ?? 1000, versao: app.getVersion() };
+    return { pasta: l.pasta || '', operador: l.operador || '', pronto: Boolean(estado), simulacao: true, limiteDiario: cfg.limiteDiario ?? 250, intervaloMs: cfg.intervaloMs ?? 1000, versao: app.getVersion() };
   });
   h('ajustes:escolherPasta', async () => {
     const r = await dialog.showOpenDialog(janela, { properties: ['openDirectory', 'createDirectory'], title: 'Pasta compartilhada (Drive, OneDrive...)' });

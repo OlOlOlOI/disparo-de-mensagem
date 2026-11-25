@@ -201,3 +201,29 @@ test('campanha: falha do provedor é registrada e não conta como enviado', asyn
   assert.equal(a.enviados('c', false).size, 0);
   assert.equal(a.historico()[0].erro, 'número sem WhatsApp');
 });
+
+const { adivinharColunas, colunasFaltando } = require('../src/core/columns');
+
+test('colunas: acha telefone, nome e autorização em planilhas comuns', () => {
+  assert.deepEqual(adivinharColunas(['Passageira', 'Celular', 'Aceita receber', 'E-mail']),
+    { telefone: 'Celular', nome: 'Passageira', aceite: 'Aceita receber' });
+  assert.deepEqual(adivinharColunas(['Nome', 'Telefone', 'Autorizou LGPD']),
+    { telefone: 'Telefone', nome: 'Nome', aceite: 'Autorizou LGPD' });
+  assert.deepEqual(adivinharColunas(['WhatsApp', 'Cliente']), { telefone: 'WhatsApp', nome: 'Cliente', aceite: '' });
+});
+
+test('colunas: em exportação de corridas, prefere os dados do passageiro e não do motorista', () => {
+  const headers = ['O.S', 'Data da corrida', 'Motorista', 'Telefone do motorista', 'Nome da passageira', 'Telefone da passageira', 'E-mail da passageira'];
+  const r = adivinharColunas(headers);
+  assert.equal(r.telefone, 'Telefone da passageira');
+  assert.equal(r.nome, 'Nome da passageira');
+});
+
+test('colunas: sem pistas, devolve vazio em vez de chutar', () => {
+  assert.deepEqual(adivinharColunas(['A', 'B', 'C']), { telefone: '', nome: '', aceite: '' });
+});
+
+test('colunas: avisa quando uma coluna salva sumiu da planilha', () => {
+  assert.deepEqual(colunasFaltando({ telefone: 'Celular', nome: 'Nome' }, ['Celular', 'Passageira']), ['Nome']);
+  assert.deepEqual(colunasFaltando({ telefone: 'Celular' }, ['Celular']), []);
+});
